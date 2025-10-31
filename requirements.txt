@@ -1,1 +1,7 @@
+transformers
+datasets
+evaluate
+torch
+numpy
+scikit-learn
 
