@@ -1,41 +1,101 @@
-# 🧠 Fine-Tuning BERT on Sentiment Analysis (SST-2)
+SST-2 Sentiment Analysis with BERT
 
-> **Author:** Gulrukhsor Akhmadjanova  
-> **Task:** Machine Learning Engineer Assignment — Fine-Tuning BERT (`bert-base-uncased`)  
-> **Goal:** Predict sentiment (positive / negative) on the SST-2 dataset using Hugging Face Transformers.
+This project fine-tunes a BERT (bert-base-uncased) model on the SST-2 dataset for binary sentiment classification (positive vs negative). Training is done via train.py, and evaluation is performed entirely in Google Colab (task1_uzcosmos.ipynb).
 
----
+All outputs (checkpoints, metrics, logs) are saved inside Google Colab.
 
-## 📌 Overview
+Installation
 
-This project fine-tunes a **pretrained BERT model** on the **Stanford Sentiment Treebank (SST-2)** dataset — a benchmark for sentiment classification.  
-The model learns to classify sentences into **positive** or **negative** sentiment categories.  
-All training and evaluation steps follow modern NLP standards using the **🤗 Transformers**, **Datasets**, and **Evaluate** libraries.
+Install required Python packages:
 
----
-
-## 🗂️ Project Structure
+pip install --upgrade pip
+pip install transformers datasets evaluate scikit-learn sentencepiece wandb tensorboard
+pip install -q accelerate  # optional for faster training
 
 
----
+Or install from requirements.txt:
 
-## 📊 Dataset: SST-2
+pip install -r requirements.txt
 
-| Property | Description |
-|-----------|--------------|
-| **Dataset Name** | GLUE — SST-2 (Stanford Sentiment Treebank) |
-| **Task Type** | Binary Sentiment Classification |
-| **Labels** | `0` → Negative, `1` → Positive |
-| **Train Size** | ~67,000 samples |
-| **Validation Size** | ~1,800 samples |
-| **Source** | [🤗 Hugging Face Datasets: glue/sst2](https://huggingface.co/datasets/glue/viewer/sst2) |
 
----
+requirements.txt content:
 
-## ⚙️ Setup & Installation
+transformers
+datasets
+evaluate
+scikit-learn
+sentencepiece
+wandb
+tensorboard
+accelerate
+torch
+numpy
+matplotlib
+tqdm
 
-### 1️⃣ Clone the Repository
-```bash
-git clone https://github.com/<your_username>/bert-sst2.git
-cd bert-sst2
+Training with train.py
 
+The script supports:
+
+Hugging Face Trainer API (default)
+
+Optional custom PyTorch loop (manual training)
+
+Standard training:
+python train.py --output_dir ./sst2_outputs --epochs 3 \
+--per_device_train_batch_size 16 --per_device_eval_batch_size 64 --lr 2e-5
+
+
+⚠️ On Colab Free GPU, reduce per_device_train_batch_size to 8 or 4 to avoid out-of-memory errors.
+
+Optional custom training loop:
+python train.py --use_custom_loop
+
+
+Note: Using --use_custom_loop restarts training from scratch.
+
+All checkpoints are saved to sst2_outputs/ in Google Colab.
+
+Evaluation in Google Colab
+
+Evaluation is handled entirely in Google Colab (task1_uzcosmos.ipynb):
+
+Automatically loads the latest checkpoint from sst2_outputs/
+
+Computes Accuracy and F1-score
+
+Generates a classification report and confusion matrix
+
+Saves metrics to results/eval_metrics.npz
+
+No evaluation scripts are included in GitHub; all evaluation outputs live in Colab.
+
+Features
+
+Automatic detection of latest model checkpoint
+
+Accuracy & F1-score evaluation
+
+Classification report & confusion matrix visualization
+
+Optional custom training loop
+
+Metrics saved for further analysis
+
+Notes
+
+All model outputs and evaluation metrics are saved inside Google Colab.
+
+To reproduce results locally, download outputs from Colab.
+
+GitHub repo contains training scripts and dependencies only.
+
+References
+
+BERT: https://huggingface.co/bert-base-uncased
+
+SST-2 Dataset (GLUE): https://huggingface.co/datasets/glue
+
+Hugging Face Transformers: https://huggingface.co/docs/transformers
+
+Google Colab: https://colab.research.google.com
