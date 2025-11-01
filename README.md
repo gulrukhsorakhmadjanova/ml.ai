@@ -144,5 +144,216 @@ Evaluation runs **entirely in Colab** via `task1_uzcosmos.ipynb` and includes:
 
 * **BERT**: [https://huggingface.co/bert-base-uncased](https://huggingface.co/bert-base-uncased)
 * **SST-2 Dataset (GLUE)**: [https://huggingface.co/datasets/glue](https://huggingface.co/datasets/glue)
-* **Hugging Face Transformers**: [https://huggingface.co/docs/transformers](https://huggingface.co/docs/transformers)
-* **Google Colab**: [https://colab.research.google.com](https://colab.research.google.com)
+
+# Road Detection from Aerial Images 🛣️
+
+> **Author:** Gulrukhsor Akhmadjanova
+> **Task:** Machine Learning Engineer Assignment — Binary Semantic Segmentation
+> **Objective:** Detect roads in high-resolution aerial images using deep learning.
+
+---
+
+## Project Overview
+
+This repository contains a full implementation of a **binary semantic segmentation pipeline** to detect roads in aerial/satellite images.
+The model predicts a per-pixel mask where:
+
+* `1` → Road
+* `0` → Background
+
+The project demonstrates **data preprocessing, model building, training, evaluation, and visualization**, using a U-Net architecture with a pre-trained backbone.
+
+---
+
+## Dataset
+
+You can use either of the following public datasets:
+
+1. **Massachusetts Roads Dataset** – Aerial imagery of Massachusetts with road masks.
+2. **DeepGlobe Road Extraction Dataset** – Satellite imagery with corresponding road masks.
+
+**Dataset Requirements:**
+
+* Images and masks should have the same resolution.
+* Masks should be binary (0 = background, 1 = road).
+* Dataset should be structured as:
+
+```
+dataset/
+├── train/
+│   ├── images/
+│   └── masks/
+├── val/
+│   ├── images/
+│   └── masks/
+└── test/
+    ├── images/
+    └── masks/
+```
+
+---
+
+## Features
+
+* **Preprocessing**:
+
+  * Resizing and normalization
+  * Data augmentation (flip, rotation, brightness, noise)
+
+* **Model**:
+
+  * U-Net with pre-trained backbone (e.g., ResNet34)
+  * Configurable hyperparameters
+
+* **Loss & Metrics**:
+
+  * Binary Cross Entropy + Dice Loss
+  * IoU (Intersection over Union)
+  * Dice Coefficient
+
+* **Training**:
+
+  * Configurable epochs, batch size, learning rate
+  * Validation tracking and model checkpointing
+
+* **Evaluation**:
+
+  * Test set evaluation with metrics
+  * Visualizations: input image, ground truth mask, predicted mask
+
+* **Code Quality**:
+
+  * Modular and reusable
+  * Configurable via dictionary (`CONFIG`)
+  * Reproducible with random seed
+
+---
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/<your-username>/road-detection.git
+cd road-detection
+```
+
+Install dependencies:
+
+```bash
+pip install -r requirements.txt
+```
+
+> `requirements.txt` includes:
+>
+> ```
+> ```
+
+torch
+torchvision
+segmentation-models-pytorch
+albumentations
+opencv-python
+matplotlib
+numpy
+tqdm
+shapely
+kaggle
+
+````
+
+---
+
+## Configuration
+
+All hyperparameters and paths are configurable in the `CONFIG` dictionary:
+
+```python
+CONFIG = {
+    "seed": 42,
+    "image_dir": "data/train/images",
+    "mask_dir": "data/train/masks",
+    "img_size": 256,
+    "batch_size": 8,
+    "epochs": 5,
+    "learning_rate": 1e-4,
+    "val_split": 0.15,
+    "test_split": 0.15,
+    "encoder_name": "resnet34",
+    "encoder_weights": "imagenet",
+    "device": "cuda",
+    "model_save_path": "best_model.pth",
+}
+````
+
+---
+
+## Usage
+
+1. **Prepare Dataset**
+   Place images and masks into `train`, `val`, and `test` folders as shown above.
+
+2. **Training**
+
+```python
+from train import train_loop, model, train_loader, val_loader
+
+history = train_loop(
+    model, train_loader, val_loader,
+    epochs=CONFIG["epochs"], lr=CONFIG["learning_rate"],
+    save_path=CONFIG["model_save_path"]
+)
+```
+
+3. **Evaluation**
+
+```python
+from evaluate import evaluate_model, visualize_predictions
+
+evaluate_model(model, test_loader)
+visualize_predictions(model, test_loader, n=5)
+```
+
+4. **Visualize Results**
+
+* Input image
+* Ground truth mask
+* Predicted mask
+
+---
+
+## Metrics
+
+* **Loss:** BCE + Dice Loss
+* **IoU (Intersection over Union)**
+* **Dice Coefficient**
+
+Metrics are logged for **training**, **validation**, and **test sets**.
+
+---
+
+## Reproducibility
+
+* Random seeds are fixed for deterministic behavior.
+* Modular, readable code for easy modification.
+* All hyperparameters are configurable via `CONFIG`.
+
+---
+
+## Optional Bonuses
+
+* Post-processing: morphological operations on predicted masks
+* Vectorization: convert masks to polygons for GIS applications
+* Tile-based training for high-resolution images
+
+---
+
+## License
+
+This project is for educational and portfolio purposes.
+Do not use the datasets for commercial purposes without proper permissions.
+
+
+
+
+
