@@ -1,7 +1,12 @@
 transformers
 datasets
 evaluate
+scikit-learn
+sentencepiece
+wandb --optional
+tensorboard
+accelerate
 torch
 numpy
-scikit-learn
-
+matplotlib
+tqdm
