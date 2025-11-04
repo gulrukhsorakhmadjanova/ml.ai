@@ -1,4 +1,4 @@
-# 🧠 Fine-Tuning BERT on Sentiment Analysis (SST-2)
+# TASK 1:  Fine-Tuning BERT on Sentiment Analysis (SST-2)
 
 > **Author:** Gulrukhsor Akhmadjanova
 > **Task:** Machine Learning Engineer Assignment — Fine-Tuning BERT (`bert-base-uncased`)
@@ -145,215 +145,139 @@ Evaluation runs **entirely in Colab** via `task1_uzcosmos.ipynb` and includes:
 * **BERT**: [https://huggingface.co/bert-base-uncased](https://huggingface.co/bert-base-uncased)
 * **SST-2 Dataset (GLUE)**: [https://huggingface.co/datasets/glue](https://huggingface.co/datasets/glue)
 
-# Road Detection from Aerial Images 🛣️
+# TASK 2: 🛰️ Road Detection from Aerial Images
 
-> **Author:** Gulrukhsor Akhmadjanova
-> **Task:** Machine Learning Engineer Assignment — Binary Semantic Segmentation
-> **Objective:** Detect roads in high-resolution aerial images using deep learning.
-
----
-
-## Project Overview
-
-This repository contains a full implementation of a **binary semantic segmentation pipeline** to detect roads in aerial/satellite images.
-The model predicts a per-pixel mask where:
-
-* `1` → Road
-* `0` → Background
-
-The project demonstrates **data preprocessing, model building, training, evaluation, and visualization**, using a U-Net architecture with a pre-trained backbone.
+This project focuses on **binary semantic segmentation** to detect roads from high-resolution aerial or satellite images.  
+The goal is to identify pixels belonging to roads (`1`) and background (`0`) using deep learning.
 
 ---
 
-## Dataset
-
-You can use either of the following public datasets:
-
-1. **Massachusetts Roads Dataset** – Aerial imagery of Massachusetts with road masks.
-2. **DeepGlobe Road Extraction Dataset** – Satellite imagery with corresponding road masks.
-
-**Dataset Requirements:**
-
-* Images and masks should have the same resolution.
-* Masks should be binary (0 = background, 1 = road).
-* Dataset should be structured as:
-
-```
-dataset/
-├── train/
-│   ├── images/
-│   └── masks/
-├── val/
-│   ├── images/
-│   └── masks/
-└── test/
-    ├── images/
-    └── masks/
-```
+## 🎯 Objective
+Build and train a model capable of automatically segmenting roads from aerial imagery using architectures like **U-Net**.  
+This project demonstrates understanding of **image segmentation**, **data preprocessing**, **model development**, **evaluation**, and **post-processing**.
 
 ---
 
-## Features
+## 📚 Dataset
+**Used:** Synthetic/Fake dataset generated within the Colab notebook for demonstration.  
+**Not yet implemented:** Real datasets such as **Massachusetts Roads** or **DeepGlobe Road Extraction**.
 
-* **Preprocessing**:
-
-  * Resizing and normalization
-  * Data augmentation (flip, rotation, brightness, noise)
-
-* **Model**:
-
-  * U-Net with pre-trained backbone (e.g., ResNet34)
-  * Configurable hyperparameters
-
-* **Loss & Metrics**:
-
-  * Binary Cross Entropy + Dice Loss
-  * IoU (Intersection over Union)
-  * Dice Coefficient
-
-* **Training**:
-
-  * Configurable epochs, batch size, learning rate
-  * Validation tracking and model checkpointing
-
-* **Evaluation**:
-
-  * Test set evaluation with metrics
-  * Visualizations: input image, ground truth mask, predicted mask
-
-* **Code Quality**:
-
-  * Modular and reusable
-  * Configurable via dictionary (`CONFIG`)
-  * Reproducible with random seed
+Each generated image has a corresponding ground truth mask of the same resolution.
 
 ---
 
-## Installation
-
-Clone the repository:
-
-```bash
-git clone https://github.com/<your-username>/road-detection.git
-cd road-detection
-```
-
-Install dependencies:
-
-```bash
-pip install -r requirements.txt
-```
-
-> `requirements.txt` includes:
->
-> ```
-> ```
-
-torch
-torchvision
-segmentation-models-pytorch
-albumentations
-opencv-python
-matplotlib
-numpy
-tqdm
-shapely
-kaggle
-
-````
+## ⚙️ Project Structure
+- Implemented in **Google Colab**
+- GitHub repository serves as a **reference link** to Colab code
+- All experiments, visualization, and training are done in Colab
 
 ---
 
-## Configuration
+## ✅ Completed Requirements
 
-All hyperparameters and paths are configurable in the `CONFIG` dictionary:
-
-```python
-CONFIG = {
-    "seed": 42,
-    "image_dir": "data/train/images",
-    "mask_dir": "data/train/masks",
-    "img_size": 256,
-    "batch_size": 8,
-    "epochs": 5,
-    "learning_rate": 1e-4,
-    "val_split": 0.15,
-    "test_split": 0.15,
-    "encoder_name": "resnet34",
-    "encoder_weights": "imagenet",
-    "device": "cuda",
-    "model_save_path": "best_model.pth",
-}
-````
+### 🧩 Data Preprocessing
+- [x] Dataset loading (synthetic dataset created in code)
+- [x] Data inspection (visualized random images and masks)
+- [x] Resizing (handled during dataset creation)
+- [x] Normalization (image tensors normalized to `[0, 1]`)
+- [x] Dataset class implemented (`RoadDataset`)
+- [ ] Real dataset loading (Massachusetts/DeepGlobe)
+- [ ] Advanced augmentation (only basic random noise/lines used)
 
 ---
 
-## Usage
-
-1. **Prepare Dataset**
-   Place images and masks into `train`, `val`, and `test` folders as shown above.
-
-2. **Training**
-
-```python
-from train import train_loop, model, train_loader, val_loader
-
-history = train_loop(
-    model, train_loader, val_loader,
-    epochs=CONFIG["epochs"], lr=CONFIG["learning_rate"],
-    save_path=CONFIG["model_save_path"]
-)
-```
-
-3. **Evaluation**
-
-```python
-from evaluate import evaluate_model, visualize_predictions
-
-evaluate_model(model, test_loader)
-visualize_predictions(model, test_loader, n=5)
-```
-
-4. **Visualize Results**
-
-* Input image
-* Ground truth mask
-* Predicted mask
+### 🧠 Model Architecture
+- [x] Implemented **U-Net** architecture from scratch
+- [x] Supports modular layers for encoder–decoder
+- [ ] No pretrained backbone (e.g., ResNet/EfficientNet) yet
 
 ---
 
-## Metrics
-
-* **Loss:** BCE + Dice Loss
-* **IoU (Intersection over Union)**
-* **Dice Coefficient**
-
-Metrics are logged for **training**, **validation**, and **test sets**.
-
----
-
-## Reproducibility
-
-* Random seeds are fixed for deterministic behavior.
-* Modular, readable code for easy modification.
-* All hyperparameters are configurable via `CONFIG`.
+### 🏋️‍♀️ Training
+- [x] Training loop implemented
+- [x] Loss function: Binary Cross Entropy (BCE)
+- [x] IoU metric implemented
+- [x] Dice metric implemented
+- [x] Tracks loss and IoU over epochs
+- [ ] Train/validation split (currently uses full dataset)
+- [ ] Combined losses (Dice + BCE not yet used)
 
 ---
 
-## Optional Bonuses
-
-* Post-processing: morphological operations on predicted masks
-* Vectorization: convert masks to polygons for GIS applications
-* Tile-based training for high-resolution images
+### 📊 Evaluation
+- [x] Test set evaluation (IoU and Dice)
+- [x] Visualization: input, ground truth, prediction (side-by-side)
+- [x] Plots: training loss and IoU curves
+- [ ] Evaluation on real dataset
 
 ---
 
-## License
+### 🧱 Code Quality & Reproducibility
+- [x] Clear, modular code (dataset class, model class, metrics, etc.)
+- [x] Configurable hyperparameters (batch size, epochs, learning rate)
+- [x] Requirements saved to `requirements.txt`
+- [x] Model saved as `road_detection_model.pth`
+- [x] Training information saved as `.json`
+- [x] Summary printed after training
+- [x] All visualizations automated
+- [x] Works fully in Google Colab
+- [ ] External dataset configuration not yet added
 
-This project is for educational and portfolio purposes.
-Do not use the datasets for commercial purposes without proper permissions.
+---
 
+### 🏅 Bonus (Optional)
+- [x] Post-processing with morphological operations (OpenCV)
+- [x] Mask-to-vector polygon conversion (Shapely)
+- [x] Overlay predictions on image
+- [x] Pretrained model option (U-Net with ResNet34 backbone)
+- [ ] Tile-based training for large images not implemented
 
+---
 
+## 🧾 Summary
 
+| Category | Description | Status |
+|-----------|-------------|--------|
+| **Data Preprocessing** | Synthetic data + normalization | ✅ Partial |
+| **Model** | U-Net (custom) | ✅ Done |
+| **Training** | BCE + IoU + Dice metrics | ✅ Partial |
+| **Evaluation** | Visualization & plots | ✅ Done |
+| **Post-processing** | Morphology + Polygon extraction | ✅ Done |
+| **Dataset** | Real dataset integration | ❌ Not yet |
+| **Tile-based training** | Not implemented | ❌ Not yet |
 
+---
+
+## 💻 Technologies Used
+- Python 3.x  
+- PyTorch  
+- OpenCV  
+- NumPy, Matplotlib  
+- Shapely  
+- tqdm  
+
+---
+
+## 🚀 How to Run
+1. Open the Colab notebook link.
+2. Run all cells in order.
+3. Model will train, evaluate, and visualize predictions.
+4. Outputs:
+   - Model weights (`road_detection_model.pth`)
+   - Metrics & training logs (`training_info.json`)
+   - Plots & predicted masks
+
+---
+
+## 📈 Future Improvements
+- Integrate real aerial datasets (Massachusetts/DeepGlobe)
+- Add advanced augmentations (flip, rotate, crop)
+- Implement hybrid losses (BCE + Dice)
+- Add validation split and early stopping
+- Support tile-based training for large images
+
+---
+
+## 👩‍💻 Author
+**Gulrukhsor Akhmadjanova**  
+Google Colab Implementation, 2025  
